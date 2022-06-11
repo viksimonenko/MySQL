@@ -1,0 +1,183 @@
+--1 select first 5 rows of the "CustomerName" and "City" columns from the "Customers" table
+ 
+ SELECT CustomerName, City FROM voodoo.Customers Limit 5;
+ 
++------------------------------------+-------------+
+| CustomerName                       | City        |
++------------------------------------+-------------+
+| Alfreds Futterkiste                | Berlin      |
+| Ana Trujillo Emparedados y helados | Mexico D.F. |
+| Antonio Moreno Taquerna            | Mexico D.F. |
+| Around the Horn                    | London      |
+| Berglunds snabbkup                 | Lulee       |
++------------------------------------+-------------+
+5 rows in set (0.00 sec)
+
+--2 select all the customers (their name and country name) from the country "Mexico"
+
+SELECT CustomerName, City FROM voodoo.Customers
+WHERE Country='Mexico';
+
++------------------------------------+-------------+
+| CustomerName                       | City        |
++------------------------------------+-------------+
+| Ana Trujillo Emparedados y helados | Mexico D.F. |
+| Antonio Moreno Taquerna            | Mexico D.F. |
+| Centro comercial Moctezuma         | Mexico D.F. |
+| Pericles Comidas clasicas          | Mexico D.F. |
+| Tortuga Restaurante                | Mexico D.F. |
++------------------------------------+-------------+
+5 rows in set (0.00 sec)
+
+
+
+
+--3 select all customers' records from the country "Germany" and the city "Berlin" or "Mannheim",  sort by the Address from Z to A
+
+SELECT * FROM voodoo.Customers
+WHERE Country='Germany' AND (City='Berlin' OR City='Mannheim')
+ORDER BY Address DESC;
+
++------------+-------------------------+--------------+----------------+----------+------------+---------+
+| CustomerID | CustomerName            | ContactName  | Address        | City     | PostalCode | Country |
++------------+-------------------------+--------------+----------------+----------+------------+---------+
+|          1 | Alfreds Futterkiste     | Maria Anders | Obere Str. 57  | Berlin   | 12209      | Germany |
+|          6 | Blauer See Delikatessen | Hanna Moos   | Forsterstr. 57 | Mannheim | 68306      | Germany |
++------------+-------------------------+--------------+----------------+----------+------------+---------+
+2 rows in set (0.00 sec)
+
+
+
+--4 select all customers' records, whose name ends with "s", from country, which name does not contain the pattern "land" and starts with "b", sort by the Country from A to Z
+
+SELECT * FROM voodoo.Customers 
+WHERE CustomerName LIKE '%s' and Country NOT LIKE '%land%' and Country LIKE 'b%'
+ORDER BY Country;
+
++------------+------------------------+-------------------+-------------------------+----------------+------------+---------+
+| CustomerID | CustomerName           | ContactName       | Address                 | City           | PostalCode | Country |
++------------+------------------------+-------------------+-------------------------+----------------+------------+---------+
+|         76 | Suprumes dulices       | Pascale Cartrain  | Boulevard Tirou, 255    | Charleroi      | B-6000     | Belgium |
+|         31 | Gourmet Lanchonetes    | Andru Fonseca     | Av. Brasil, 442         | Campinas       | 04876-786  | Brazil  |
+|         34 | Hanari Carnes          | Mario Pontes      | Rua do Pauo, 67         | Rio de Janeiro | 05454-876  | Brazil  |
+|         67 | Ricardo Adocicados     | Janete Limeira    | Av. Copacabana, 267     | Rio de Janeiro | 02389-890  | Brazil  |
+|         81 | Tradibro Hipermercados | Anabela Domingues | Av. Inks de Castro, 414 | Suo Paulo      | 05634-030  | Brazil  |
++------------+------------------------+-------------------+-------------------------+----------------+------------+---------+
+5 rows in set (0.00 sec)
+
+
+
+--5 select all customers' records from a City of "Paris", "Berlin", "Mannheim" or "London" and their IDs grater than 10, but less that 20
+
+SELECT * FROM voodoo.Customers
+WHERE City IN ('Paris', 'Mannheim', 'London') and CustomerID BETWEEN 10 AND 20;
+
++------------+-----------------------+-------------------+-----------------------------+--------+------------+---------+
+| CustomerID | CustomerName          | ContactName       | Address                     | City   | PostalCode | Country |
++------------+-----------------------+-------------------+-----------------------------+--------+------------+---------+
+|         11 | B s Beverages         | Victoria Ashworth | Fauntleroy Circus           | London | EC2 5NT    | UK      |
+|         16 | Consolidated Holdings | Elizabeth Brown   | Berkeley Gardens 12 Brewery | London | WX1 6LT    | UK      |
+|         19 | Eastern Connection    | Ann Devon         | 35 King George              | London | WX3 6FW    | UK      |
++------------+-----------------------+-------------------+-----------------------------+--------+------------+---------+
+3 rows in set (0.00 sec)
+
+
+
+--6 selects all orders with an ordered between 04-July-1996 and 09-July-1996
+
+SELECT * FROM Orders
+WHERE OrderDate BETWEEN "1996-07-04" AND "1996-07-09";
+
++---------+------------+------------+------------+-----------+
+| OrderID | CustomerID | EmployeeID | OrderDate  | ShipperID |
++---------+------------+------------+------------+-----------+
+|   10248 |         90 |          5 | 1996-07-04 |         3 |
+|   10249 |         81 |          6 | 1996-07-05 |         1 |
+|   10250 |         34 |          4 | 1996-07-08 |         2 |
+|   10251 |         84 |          3 | 1996-07-08 |         1 |
+|   10252 |         76 |          4 | 1996-07-09 |         2 |
++---------+------------+------------+------------+-----------+
+5 rows in set (0.00 sec)
+
+
+
+--7 select the list of orders (its ID, customer's Name and the date of an order) which were made in the second decade of February, 1997
+
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID
+WHERE OrderDate BETWEEN "1997-02-11" AND "1997-02-20";
+
++---------+--------------------+------------+
+| OrderID | CustomerName       | OrderDate  |
++---------+--------------------+------------+
+|   10442 | Ernst Handel       | 1997-02-11 |
+|   10443 | Reggiani Caseifici | 1997-02-12 |
++---------+--------------------+------------+
+2 rows in set (0.00 sec)
+
+
+
+--8 find all employees (their names) and "Amount of orders" they made (if any), sort them by name from A to Z, ensure all result columns have appropriate names.
+
+SELECT Employees.FirstName, Count(Orders.OrderID) AS "Amount of orders"
+FROM Employees
+LEFT JOIN Orders ON Employees.EmployeeID = Orders.EmployeeID
+GROUP BY Employees.FirstName
+ORDER BY Employees.FirstName;
+
++-----------+------------------+
+| FirstName | Amount of orders |
++-----------+------------------+
+| Adam      |                0 |
+| Andrew    |               20 |
+| Anne      |                6 |
+| Janet     |               31 |
+| Laura     |               27 |
+| Margaret  |               40 |
+| Michael   |               18 |
+| Nancy     |               29 |
+| Robert    |               14 |
+| Steven    |               11 |
++-----------+------------------+
+10 rows in set (0.00 sec)
+
+
+
+--9 select all unique UK cities, where customers and suppliers live, sort from A to Z
+
+SELECT City, Country FROM Customers
+WHERE Country='UK'
+UNION
+SELECT City, Country FROM Suppliers
+WHERE Country='UK'
+ORDER BY City;
+
++------------+---------+
+| City       | Country |
++------------+---------+
+| Cowes      | UK      |
+| London     | UK      |
+| Londona    | UK      |
+| Manchester | UK      |
++------------+---------+
+4 rows in set (0.00 sec)
+
+
+
+--10 select products (their names) and prices records that have an above average price, but cheaper than 33, sort ascending
+
+SELECT ProductName, Price FROM Products
+WHERE Price > (SELECT AVG(Price) FROM Products) and Price < 33
+ORDER BY Price;
+
++---------------------------------+-------+
+| ProductName                     | Price |
++---------------------------------+-------+
+| Uncle Bob s Organic Dried Pears | 30.00 |
+| Ikura                           | 31.00 |
+| Gumbur Gummiburchen             | 31.23 |
+| Mascarpone Fabioli              | 32.00 |
+| Perth Pasties                   | 32.80 |
++---------------------------------+-------+
+5 rows in set (0.00 sec)
+

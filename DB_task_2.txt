@@ -1,2 +1,23 @@
-1.	Write the SQL-query to select the list of all students and the quantity of classes each student has attended. The result may look like this:
+1.	Write the SQL-query to select the list of all students and the quantity of classes each student has attended. 
+The result may look like this:
 
++----------------------+---------+
+| st_name              | classes |
++----------------------+---------+
+| Воробьёв В.В.        | 8       |
+| Прогульщиков П.П.    | 0       |
++----------------------+---------+
+|          And so on ...         |
++--------------------------------+
+
+2.	Write the SQL-query to select the list of all students, and the minimum and maximum mark for each student (in case a student has at least one mark),
+and average mark for each student. The result may look like this:
+
++----------------------+------+------+------+
+| st_name              |  min |  max |  avg |
++----------------------+------+------+------+
+| Соколов С.С.         |  4   |  10  |7.2000|
+| Орлов О.О.           |  6   |  7   |6.5000|
++----------------------+------+------+------+
+|                 And so on ...             |
++-------------------------------------------+

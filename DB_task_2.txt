@@ -1,0 +1,2 @@
+1.	Write the SQL-query to select the list of all students and the quantity of classes each student has attended. The result may look like this:
+

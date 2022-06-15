@@ -10,6 +10,12 @@ The result may look like this:
 |          And so on ...         |
 +--------------------------------+
 
+SELECT `st_name`, COUNT(`ed_student`) AS `classes`
+FROM `students`
+	LEFT JOIN `education` 
+	ON `st_id` = `ed_student`
+GROUP BY `ed_student`
+
 2.	Write the SQL-query to select the list of all students, and the minimum and maximum mark for each student (in case a student has at least one mark),
 and average mark for each student. The result may look like this:
 

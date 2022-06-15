@@ -27,3 +27,13 @@ and average mark for each student. The result may look like this:
 +----------------------+------+------+------+
 |                 And so on ...             |
 +-------------------------------------------+
+
+SELECT `st_name`,
+	MIN(`ed_mark`) AS `min`,
+	MAX(`ed_mark`) AS `max`,
+	AVG(`ed_mark`) AS `avg`
+FROM `students`
+	JOIN `education`
+	ON `st_id` = `ed_student`
+WHERE `ed_mark` IS NOT NULL
+GROUP BY `ed_student`
